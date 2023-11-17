@@ -1,23 +1,30 @@
+import React, { Component, useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
 function App() {
+
+  const [bands, getBands] = useState([]);
+
+  const fetchBands = () => {
+    fetch('https://laravel.macest.slaskdatacenter.pl/api/getbands')
+    .then(result => result.json())
+    .then(data => getBands(data))
+    .catch(error => console.log(error));
+  }
+
+  useEffect(() => {
+    fetchBands();
+  });
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      
+      <main>
+        { bands.map((n,i) => (
+          <p key={i}>{ n.band_name }</p>
+        ))}
+      </main>
     </div>
   );
 }
